@@ -290,11 +290,38 @@ void StartScene::m_updateUI()
 		m_isGravityEnabled = (m_isGravityEnabled == true ? false : true);
 	}
 
+	ImGui::SameLine();
+
+	if (ImGui::Button("Reset All"))
+	{
+		m_isGravityEnabled = false;
+		m_pShip->setPosition(glm::vec2(400.0f, 300.0f));
+		m_gravity = 9.8f;
+		m_PPM = 5.0f;
+		m_Atime = 0.016667f;
+		m_angle = 45.0f;
+		m_velocity = 100.0f;
+		m_velocityX = m_velocityY = 0.0f;
+	}
+
 	ImGui::PushItemWidth(80);
 	if (ImGui::SliderFloat("Gravity", &m_gravity, 0.1f, 30.0f, "%.1f"))
 	{
 		
 	}
+	if (ImGui::SliderFloat("Pixels Per Meter", &m_PPM, 1.0f, 30.0f, "%.1f"))
+	{
+
+	}
+	if (ImGui::SliderFloat("Kicking Angle", &m_angle, 0.0f, 90.0f, "%.1f"))
+	{
+
+	}
+	if (ImGui::SliderFloat("Velocity", &m_velocity, 0.0f, 200.0f, "%.1f"))
+	{
+
+	}
+
 
 	/*
 	ImGui::SameLine();
@@ -492,15 +519,28 @@ void StartScene::m_updateUI()
 	*/
 	// Main Window End
 	ImGui::End();
-	
 }
 
 void StartScene::m_move()
 {
-	m_velocity = glm::vec2(10.0f, 0.0f) * m_PPM;
-	m_acceleration = glm::vec2(0.0f, m_gravity) * m_PPM;
+	// Pf = Pi  + Vi*T + 1/2A*T^2
 
-	m_position = m_pShip->getPosition() + (m_velocity * m_time) + (m_acceleration * 0.5f) * (m_Atime * m_Atime); 
+	// Pfx = Pix + Vixcos(theta)T + 1/2AxT^2
+	// Pfy = Piy + Viysin(theta)T + 1/2AyT^2
+
+	// velocity components
+	m_velocityX = (m_velocity * m_PPM) * cos(m_angle * Deg2Rad);
+	m_velocityY = (m_velocity * m_PPM) * -sin(m_angle * Deg2Rad);
+	// final velocity vector
+	glm::vec2 velocity_vector = glm::vec2(m_velocityX, m_velocityY);
+
+
+	m_acceleration = glm::vec2(0.0f, m_gravity) * m_PPM;
+	
+	// Physics equation
+	m_position = m_pShip->getPosition() + 
+		(velocity_vector * m_time) + 
+		(m_acceleration * 0.5f) * (m_Atime * m_Atime); 
 
 	m_Atime += m_time;
 
