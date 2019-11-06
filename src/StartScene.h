@@ -4,7 +4,9 @@
 
 #include "Scene.h"
 #include "Label.h"
-#include "ship.h"
+#include "Wookie.h"
+#include "Bomb.h"
+#include "Tropper.h"
 #include <cmath>
 
 class StartScene : public Scene
@@ -24,7 +26,10 @@ private:
 	/*Label* m_pStartLabel;
 	Label* m_pInstructionsLabel;*/
 
-	Ship* m_pShip;
+	// Our Objects for this assignment
+	Wookie* m_pWookie;
+	Bomb* m_pBomb;
+	Tropper* m_pTropper;
 
 	glm::vec2 m_mousePosition;
 
@@ -43,6 +48,7 @@ private:
 	const float Rad2Deg = 57.2957795130f;
 	bool m_isGravityEnabled = false;
 	float m_gravity = 9.8f;
+	float m_wind = 0.0f; // the amount of accel the wind gives the object on the x-axis
 	float m_PPM = 5.0f; // pixels per meter
 
 	glm::vec2 m_position = glm::vec2(0.0f, 0.0f);

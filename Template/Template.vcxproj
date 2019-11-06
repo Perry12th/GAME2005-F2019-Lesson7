@@ -161,6 +161,7 @@
     <ClCompile Include="..\include\IMGUI\imgui_draw.cpp" />
     <ClCompile Include="..\include\IMGUI\imgui_widgets.cpp" />
     <ClCompile Include="..\include\IMGUI_SDL\imgui_sdl.cpp" />
+    <ClCompile Include="..\src\Bomb.cpp" />
     <ClCompile Include="..\src\CollisionManager.cpp" />
     <ClCompile Include="..\src\DisplayObject.cpp" />
     <ClCompile Include="..\src\EndScene.cpp" />
@@ -179,7 +180,9 @@
     <ClCompile Include="..\src\Target.cpp" />
     <ClCompile Include="..\src\TextureManager.cpp" />
     <ClCompile Include="..\src\Tile.cpp" />
+    <ClCompile Include="..\src\Tropper.cpp" />
     <ClCompile Include="..\src\Util.cpp" />
+    <ClCompile Include="..\src\Wookie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\IMGUI\imconfig.h" />
@@ -189,6 +192,7 @@
     <ClInclude Include="..\include\IMGUI\imstb_textedit.h" />
     <ClInclude Include="..\include\IMGUI\imstb_truetype.h" />
     <ClInclude Include="..\include\IMGUI_SDL\imgui_sdl.h" />
+    <ClInclude Include="..\src\Bomb.h" />
     <ClInclude Include="..\src\CollisionManager.h" />
     <ClInclude Include="..\src\Config.h" />
     <ClInclude Include="..\src\DisplayObject.h" />
@@ -208,7 +212,9 @@
     <ClInclude Include="..\src\TextureManager.h" />
     <ClInclude Include="..\src\Tile.h" />
     <ClInclude Include="..\src\TileComparators.h" />
+    <ClInclude Include="..\src\Tropper.h" />
     <ClInclude Include="..\src\Util.h" />
+    <ClInclude Include="..\src\Wookie.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

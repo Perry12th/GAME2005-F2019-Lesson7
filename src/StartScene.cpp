@@ -17,7 +17,9 @@ StartScene::~StartScene()
 
 void StartScene::draw()
 {
-	m_pShip->draw();
+	m_pWookie->draw();
+	m_pBomb->draw();
+	m_pTropper->draw();
 
 	// ImGui Rendering section - DO NOT MOVE OR DELETE
 	if (m_displayUI)
@@ -30,9 +32,15 @@ void StartScene::draw()
 
 void StartScene::update()
 {
-	if (m_isGravityEnabled)
+	if (m_isGravityEnabled && m_pBomb->m_bHitFloor == false)
 	{
-		m_move();
+		m_move(); // Move the bomb as normal
+
+		if (m_pBomb->getPosition().y > 300.0f) // Once the bomb is past the floor
+		{
+			m_pBomb->m_bHitFloor = true; // Stop the movenment
+			m_pBomb->m_sState = "flames"; //Switch its texture to the flames
+		}
 	}
 
 	if (m_displayUI)
@@ -43,7 +51,7 @@ void StartScene::update()
 
 void StartScene::clean()
 {
-	delete m_pShip;
+	delete m_pWookie, m_pBomb, m_pTropper;
 
 	removeAllChildren();
 }
@@ -154,9 +162,17 @@ void StartScene::handleEvents()
 void StartScene::start()
 {
 
-	m_pShip = new Ship();
-	m_pShip->setPosition(glm::vec2(400.0f, 300.0f));
-	addChild(m_pShip);
+	m_pWookie = new Wookie();
+	m_pWookie->setPosition(glm::vec2(300.0f, 300.0f));
+	addChild(m_pWookie);
+
+	m_pBomb = new Bomb();
+	m_pBomb->setPosition(glm::vec2(320.0f, 300.0f));
+	addChild(m_pBomb);
+
+	m_pTropper = new Tropper();
+	m_pTropper->setPosition(glm::vec2(600.0f, 300.0f));
+	addChild(m_pTropper);
 }
 
 // ImGui functions ***********************************************
@@ -295,8 +311,11 @@ void StartScene::m_updateUI()
 	if (ImGui::Button("Reset All"))
 	{
 		m_isGravityEnabled = false;
-		m_pShip->setPosition(glm::vec2(400.0f, 300.0f));
+		m_pBomb->setPosition(glm::vec2(320.0f, 300.0f));
+		m_pBomb->m_bHitFloor = false;
+		m_pBomb->m_sState = "bomb";
 		m_gravity = 9.8f;
+		m_wind = 0.0f;
 		m_PPM = 5.0f;
 		m_Atime = 0.016667f;
 		m_angle = 45.0f;
@@ -308,6 +327,10 @@ void StartScene::m_updateUI()
 	if (ImGui::SliderFloat("Gravity", &m_gravity, 0.1f, 30.0f, "%.1f"))
 	{
 		
+	}
+	if (ImGui::SliderFloat("Wind", &m_wind, -30.0f, 30.0f, "%.1f"))
+	{
+
 	}
 	if (ImGui::SliderFloat("Pixels Per Meter", &m_PPM, 1.0f, 30.0f, "%.1f"))
 	{
@@ -531,18 +554,19 @@ void StartScene::m_move()
 	// velocity components
 	m_velocityX = (m_velocity * m_PPM) * cos(m_angle * Deg2Rad);
 	m_velocityY = (m_velocity * m_PPM) * -sin(m_angle * Deg2Rad);
+	
 	// final velocity vector
 	glm::vec2 velocity_vector = glm::vec2(m_velocityX, m_velocityY);
 
 
-	m_acceleration = glm::vec2(0.0f, m_gravity) * m_PPM;
+	m_acceleration = glm::vec2(m_wind, m_gravity) * m_PPM;
 	
 	// Physics equation
-	m_position = m_pShip->getPosition() + 
+	m_position = m_pBomb->getPosition() + 
 		(velocity_vector * m_time) + 
 		(m_acceleration * 0.5f) * (m_Atime * m_Atime); 
 
 	m_Atime += m_time;
 
-	m_pShip->setPosition(m_position);
+	m_pBomb->setPosition(m_position);
 }
