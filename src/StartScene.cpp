@@ -46,6 +46,7 @@ void StartScene::update()
 	if (m_displayUI)
 	{
 		m_updateUI();
+		m_pTropper->setPosition(glm::vec2(m_fTropperPosition, 300.0f));
 	}
 }
 
@@ -163,15 +164,15 @@ void StartScene::start()
 {
 
 	m_pWookie = new Wookie();
-	m_pWookie->setPosition(glm::vec2(300.0f, 300.0f));
+	m_pWookie->setPosition(glm::vec2(200.0f, 300.0f));
 	addChild(m_pWookie);
 
 	m_pBomb = new Bomb();
-	m_pBomb->setPosition(glm::vec2(320.0f, 300.0f));
+	m_pBomb->setPosition(glm::vec2(220.0f, 300.0f));
 	addChild(m_pBomb);
 
 	m_pTropper = new Tropper();
-	m_pTropper->setPosition(glm::vec2(600.0f, 300.0f));
+	m_pTropper->setPosition(glm::vec2(500.0f, 300.0f));
 	addChild(m_pTropper);
 }
 
@@ -311,7 +312,7 @@ void StartScene::m_updateUI()
 	if (ImGui::Button("Reset All"))
 	{
 		m_isGravityEnabled = false;
-		m_pBomb->setPosition(glm::vec2(320.0f, 300.0f));
+		m_pBomb->setPosition(glm::vec2(220.0f, 300.0f));
 		m_pBomb->m_bHitFloor = false;
 		m_pBomb->m_sState = "bomb";
 		m_gravity = 9.8f;
@@ -321,6 +322,7 @@ void StartScene::m_updateUI()
 		m_angle = 45.0f;
 		m_velocity = 100.0f;
 		m_velocityX = m_velocityY = 0.0f;
+		m_fTropperPosition = 500.0f;
 	}
 
 	ImGui::PushItemWidth(80);
@@ -343,6 +345,10 @@ void StartScene::m_updateUI()
 	if (ImGui::SliderFloat("Velocity", &m_velocity, 0.0f, 200.0f, "%.1f"))
 	{
 
+	}
+	if (ImGui::SliderFloat("Trooper Position", &m_fTropperPosition, 300.0f, 750.0f, "%0.f"))
+	{
+		
 	}
 
 

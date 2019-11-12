@@ -30,6 +30,7 @@ private:
 	Wookie* m_pWookie;
 	Bomb* m_pBomb;
 	Tropper* m_pTropper;
+	float m_fTropperPosition = 500.0f; // Where the tropper is in the scene (x-axis)
 
 	glm::vec2 m_mousePosition;
 
